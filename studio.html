@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionSpark Studio</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background-color: #0f0f0f; color: white; padding: 15px; padding-bottom: 80px; }
+        .studio-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .avatar { width: 50px; height: 50px; border-radius: 50%; background: #282828; display:flex; align-items:center; justify-content:center; font-size:24px; }
+        
+        /* کارت‌های آنالیز دقیقا شبیه عکس ارسالی شما */
+        .analytics-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .analytics-card { background: #1f1f1f; padding: 15px; border-radius: 12px; text-align: center; }
+        .analytics-card h4 { font-size: 12px; color: #aaa; margin-bottom: 5px; }
+        .analytics-card p { font-size: 20px; font-weight: bold; }
+
+        .upload-box { background: #1f1f1f; border: 2px dashed #444; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 20px; }
+        .upload-box input { display: none; }
+        .upload-box label { background: white; color: black; padding: 8px 16px; border-radius: 20px; display: inline-block; cursor: pointer; margin-top: 10px; font-weight: bold; }
+        
+        .input-field { width: 100%; background: #282828; border: 1px solid #444; color: white; padding: 10px; border-radius: 8px; margin-top: 10px; }
+        
+        /* بخش واجد شرایط بودن برای درآمدزایی */
+        .eligibility-box { background: #1f1f1f; padding: 15px; border-radius: 12px; margin-top: 20px; }
+        .progress-bar { background: #333; height: 8px; border-radius: 4px; margin: 8px 0 15px 0; overflow: hidden; }
+        .progress { background: #00b4d8; height: 100%; width: 26%; } /* شبیه‌سازی درصد سابسکرایب شما */
+
+        nav.bottom-nav { position: fixed; bottom: 0; left:0; width: 100%; background: #0f0f0f; border-top: 1px solid #272727; display: flex; justify-content: space-around; padding: 10px 0; }
+        .nav-item { text-align: center; color: #aaa; text-decoration: none; font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="studio-header">
+        <div class="avatar"><i class="fab fa-youtube" style="color: red;"></i></div>
+        <div>
+            <h2>VisionSpark Studio</h2>
+            <p style="color: #aaa; font-size: 13px;">۱۳۱ دنبال‌کننده</p>
+        </div>
+    </div>
+
+    <h3 style="margin-bottom: 10px; font-size: 16px;">آمار کانال (در ۲۸ روز گذشته)</h3>
+    <div class="analytics-container">
+        <div class="analytics-card">
+            <h4>بازدیدها (Views)</h4>
+            <p id="totalViews">۳.۱هزار</p>
+        </div>
+        <div class="analytics-card">
+            <h4>ساعت تماشا (Watch time)</h4>
+            <p>۶۸۹ ساعت</p>
+        </div>
+    </div>
+
+    <div class="upload-box">
+        <i class="fas fa-cloud-upload-alt" style="font-size: 40px; color: #aaa;"></i>
+        <p style="margin-top: 10px;">ویدیو جدید خود را منتشر کنید</p>
+        <input type="text" id="videoTitle" class="input-field" placeholder="عنوان ویدیو را بنویسید...">
+        <input type="file" id="fileChooser" accept="video/*">
+        <label for="fileChooser">انتخاب فایل</label>
+        <button onclick="publishVideo()" style="width:100%; background:red; color:white; border:none; padding:10px; border-radius:8px; margin-top:10px; font-weight:bold; cursor:pointer;">انتشار ویدیو</button>
+    </div>
+
+    <div class="eligibility-box">
+        <h3>شرایط درآمدزایی کانال شما</h3>
+        <p style="font-size: 12px; color: #aaa; margin-top:5px;">آمار به روز شده بر اساس تصاویر شما</p>
+        
+        <div style="margin-top: 15px;">
+            <div style="display:flex; justify-content:space-between; font-size:13px;">
+                <span>۱۳۱ سابسکرایبر</span>
+                <span style="color:#aaa;">از ۵۰۰</span>
+            </div>
+            <div class="progress-bar"><div class="progress" style="width: 26%;"></div></div>
+        </div>
+
+        <div>
+            <div style="display:flex; justify-content:space-between; font-size:13px;">
+                <span>۲,۰۹۴ ساعت تماشا</span>
+                <span style="color:#aaa;">از ۳,۰۰۰</span>
+            </div>
+            <div class="progress-bar"><div class="progress" style="width: 69%; background:#00b4d8;"></div></div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i>خانه</a>
+        <a href="index.html" class="nav-item"><i class="fas fa-arrow-left"></i>بازگشت به برنامه</a>
+    </nav>
+
+    <script>
+        function publishVideo() {
+            const titleInput = document.getElementById('videoTitle');
+            const fileInput = document.getElementById('fileChooser');
+
+            if (!titleInput.value || fileInput.files.length === 0) {
+                alert('لطفا عنوان و فایل ویدیو را انتخاب کنید.');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const videoSrc = URL.createObjectURL(file);
+
+            // ایجاد آبجکت ویدیو
+            const newVideo = {
+                title: titleInput.value,
+                src: videoSrc,
+                views: 0,
+                date: 'هم‌اکنون'
+            };
+
+            // ذخیره در دیتابیس محلی مرورگر
+            const currentVideos = JSON.parse(localStorage.getItem('uploaded_videos')) || [];
+            currentVideos.unshift(newVideo);
+            localStorage.setItem('uploaded_videos', JSON.stringify(currentVideos));
+
+            alert('ویدیو با موفقیت در شبکه منتشر شد!');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
